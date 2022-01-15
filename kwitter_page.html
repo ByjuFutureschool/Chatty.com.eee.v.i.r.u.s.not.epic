@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kwitter Message page</title>
+<script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/live/3.1/firebase.js"></script>
+
+<link href="https://fonts.googleapis.com/css?family=Yeon+Sung&display=swap" rel="stylesheet"><meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<div class="container">
+	<button id="logout"  onclick="logout();" class="glyphicon glyphicon-log-out btn btn-danger">Logout</button>
+	<center>
+		<h1 class="header">	
+			Chatty	
+			<sup>
+				<img src="data:image/png;base64,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">
+			</sup>
+		</h1>
+		<div id="output" style="text-align: left;margin-bottom: 70px;"> </div>
+	</center>
+</div>
+
+<center>
+	<div class="input_div_message_page">
+		<label>Send:</label>
+		<input type="text"  id="msg"  class="form-control"  placeholder="Message" >
+		<button onclick="send();" class="btn btn-success">Send</button>
+	</div>
+</center>
+
+<script src="kwitter_page.js"></script>
+</body>
+</html>
